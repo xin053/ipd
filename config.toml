@@ -1,0 +1,44 @@
+# config file for ipd server
+
+[ipd]
+# ipd server port
+port = "6789"
+# buffer size used for goroutine querying ip data
+# set it to the max ip numbers in one request
+chanel_buffer = 200
+# used for authorization, each request should have this http header
+auth_key = "thisisaveryimportantkey"
+# timeout for public ip querying API
+api_timeout = "3s"
+# your baidu ip server AK
+baidu_AK = "dXkvR03fdzCvUvfb69Ztnlr6UBMk7Azy"
+# this can be set at baidu map console, and your request should have
+# http hearder Referer set to this value
+baidu_referer = "www.mygoipapi.com"
+# request order, the first one will be used asynchronously, the rest will just use a for loop statement
+# if you don't know what this means, you should not change this
+request_order = ["ip2region", "chunzhen", "geolite2", "api"]
+
+[sentry]
+# when your don't want to use sentry, please comment this block
+# sentry DSN
+dsn  = "https://3d94eafaf06c4626aa6fec57a5e78176:4d1da97ba2e14289b34d0aa5e09ef49b@sentry.io/1200974"
+
+[elasticsearch]
+# when your don't want to use sentry, please comment this block
+# elasticsearch url
+url = "http://127.0.0.1:9200"
+# elasticsearch index
+index = "ipinfo"
+
+[ip2region]
+# https://github.com/lionsoul2014/ip2region
+# ip2region.db download url
+url = "https://github.com/lionsoul2014/ip2region/raw/master/data/ip2region.db"
+
+[cache]
+# use bigcache lib
+# expiration time for every entry
+expiration = "12h"
+# max entry size
+max_entry = 1000
