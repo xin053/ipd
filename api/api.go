@@ -3,6 +3,7 @@ package api
 import (
 	"math/rand"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -57,4 +58,8 @@ func (i *IPdAPI) FindIP(ip string, ch chan config.IPWithGeo, wg *sync.WaitGroup)
 // Register register server
 func (i *IPdAPI) Register(routine bool) {
 	server.Register(i, routine)
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
