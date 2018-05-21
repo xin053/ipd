@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"path"
-	"runtime"
 	"strings"
 	"time"
 
@@ -86,11 +84,4 @@ func AddGeo(ipInfo *config.IPInfo) *config.IPWithGeo {
 	default:
 		return &config.IPWithGeo{*ipInfo, config.Geo{0, 0}}
 	}
-}
-
-// GetCurrentPath get current caller directory
-func GetCurrentPath() string {
-	_, filename, _, _ := runtime.Caller(1)
-
-	return path.Dir(filename)
 }

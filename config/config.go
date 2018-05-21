@@ -1,9 +1,8 @@
 package config
 
 import (
-	"path"
+	"os"
 	"path/filepath"
-	"runtime"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -383,7 +382,10 @@ var GeoMap = map[string]Geo{
 
 func init() {
 	var err error
-	dir := filepath.Dir(getCurrentPath())
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Error(err)
+	}
 	var config tomlConfig
 	if _, err = toml.DecodeFile(filepath.Join(dir, "config.toml"), &config); err != nil {
 		log.Error(err)
@@ -418,9 +420,4 @@ func init() {
 		ESURL = config.Elasticsearch.ESURL
 		ESIndex = config.Elasticsearch.ESIndex
 	}
-}
-
-func getCurrentPath() string {
-	_, filename, _, _ := runtime.Caller(1)
-	return path.Dir(filename)
 }
