@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -42,10 +43,10 @@ func (i *IPdDb3) FindIP(ip string, ch chan config.IPWithGeo, wg *sync.WaitGroup)
 
 	ipInfo := config.IPInfo{
 		IP:      ip,
-		Country: result.Country,
-		Region:  result.Province,
-		City:    result.City,
-		ISP:     result.ISP,
+		Country: strings.Replace(result.Country, "0", "", -1),
+		Region:  strings.Replace(result.Province, "0", "", -1),
+		City:    strings.Replace(result.City, "0", "", -1),
+		ISP:     strings.Replace(result.ISP, "0", "", -1),
 	}
 
 	ipWithGeo = utils.AddGeo(&ipInfo)
