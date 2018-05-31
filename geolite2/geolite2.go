@@ -4,6 +4,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -43,11 +44,15 @@ func (i *IPdDb2) FindIP(ip string, ch chan config.IPWithGeo, wg *sync.WaitGroup)
 	if len(record.Subdivisions) == 0 {
 		return ipWithGeo
 	}
+	region := record.Subdivisions[0].Names["zh-CN"]
+	region = strings.Replace(region, "省", "", -1)
+	region = strings.Replace(region, "市", "", -1)
+	region = strings.Replace(region, "自治区", "", -1)
 	ipWithGeo = &config.IPWithGeo{
 		config.IPInfo{
 			IP:      ip,
 			Country: record.Country.Names["zh-CN"],
-			Region:  record.Subdivisions[0].Names["zh-CN"],
+			Region:  region,
 			City:    record.City.Names["zh-CN"],
 		},
 		config.Geo{
