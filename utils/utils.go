@@ -52,36 +52,30 @@ func EmptyStrings(s ...string) bool {
 
 // AddGeo add geo information to IPInfo struct
 func AddGeo(ipInfo *config.IPInfo) *config.IPWithGeo {
-	switch {
-	case ipInfo.City != "" && ipInfo.City != "XX" && ipInfo.City != "0":
-		ipInfo.City = strings.Replace(ipInfo.City, "市", "", -1)
-		if geo, ok := config.GeoMap[ipInfo.City]; !ok {
-			log.Warn("can not get geo information of: ", ipInfo.City, ipInfo.Region, ipInfo.Country, ipInfo.IP)
-			return &config.IPWithGeo{*ipInfo, config.Geo{0, 0}}
-		} else {
-			ipInfo.Country = "中国"
-			ipInfo.Region = strings.Replace(ipInfo.Region, "省", "", -1)
-			ipInfo.Region = strings.Replace(ipInfo.Region, "市", "", -1)
-			ipInfo.Region = strings.Replace(ipInfo.Region, "自治区", "", -1)
-			return &config.IPWithGeo{*ipInfo, geo}
-		}
-	case ipInfo.Region != "":
+	ipInfo.City = strings.Replace(ipInfo.City, "市", "", -1)
+	if geo, ok := config.GeoMap[ipInfo.City]; !ok {
+		// get geo info by Region
 		ipInfo.Region = strings.Replace(ipInfo.Region, "省", "", -1)
 		ipInfo.Region = strings.Replace(ipInfo.Region, "市", "", -1)
 		ipInfo.Region = strings.Replace(ipInfo.Region, "自治区", "", -1)
 		if geo, ok := config.GeoMap[ipInfo.Region]; !ok {
 			log.Warn("can not get geo information of: ", ipInfo.Region, ipInfo.Country, ipInfo.IP)
+			if ipInfo.Country == "中国" || strings.ToLower(ipInfo.Country) == "china" {
+				log.Warn("this chinese ip has no region or city: ", ipInfo.IP)
+			}
 			return &config.IPWithGeo{*ipInfo, config.Geo{0, 0}}
 		} else {
 			ipInfo.Country = "中国"
 			return &config.IPWithGeo{*ipInfo, geo}
 		}
-	case ipInfo.Country != "":
-		if ipInfo.Country == "中国" || strings.ToLower(ipInfo.Country) == "china" {
-			log.Warn("this chinese ip has no region or city: ", ipInfo.IP)
-		}
+		log.Warn("can not get geo information of: ", ipInfo.City, ipInfo.Region, ipInfo.Country, ipInfo.IP)
 		return &config.IPWithGeo{*ipInfo, config.Geo{0, 0}}
-	default:
-		return &config.IPWithGeo{*ipInfo, config.Geo{0, 0}}
+	} else {
+		// get geo info by city
+		ipInfo.Country = "中国"
+		ipInfo.Region = strings.Replace(ipInfo.Region, "省", "", -1)
+		ipInfo.Region = strings.Replace(ipInfo.Region, "市", "", -1)
+		ipInfo.Region = strings.Replace(ipInfo.Region, "自治区", "", -1)
+		return &config.IPWithGeo{*ipInfo, geo}
 	}
 }
