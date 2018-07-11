@@ -52,7 +52,7 @@
 
 `ipd`提供四种ip反查的方式:
 
-1. 通过[纯真ip数据库](http://www.cz88.net/fox/ipdat.shtml)(目前更新到`2018-07-05`)
+1. 通过[纯真ip数据库](http://www.cz88.net/fox/ipdat.shtml)(目前更新到`2018-07-10`)
 2. 通过[GeoLite2数据库](https://dev.maxmind.com/zh-hans/geoip/geoip2/geolite2-%E5%BC%80%E6%BA%90%E6%95%B0%E6%8D%AE%E5%BA%93/)
 3. 通过[ip2region数据库](https://github.com/lionsoul2014/ip2region),启动服务时会自动从github下载最新的数据库文件
 4. 通过公开的 REST API方式, 目前支持四种接口:
